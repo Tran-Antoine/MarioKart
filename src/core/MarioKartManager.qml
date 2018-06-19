@@ -9,22 +9,20 @@ Item {
     signal endReached
 
     property Timer gameTimer : gameTimer
-    property bool failed : false
-
+    property Timer rotationTimer : delay
+    property int warnNumber : 0
 
     onRobotConnected: {
 
         window.connectionPannel.visible = false
         window.mapChoosing.visible = true
         console.log("Robot is now connected")
-
     }
 
     onMapChosen: {
 
         window.mapChoosing.visible = false
         window.menuPannel.visible = true
-
     }
 
     onPlayStart: {
@@ -41,19 +39,17 @@ Item {
 
         console.log("reached !")
         player.isReachingCheckPoint = true
+        player.showScored()
         player.pointAmount++
 
-        if(player.pointAmount == 4)
+        if(player.pointAmount == 3)
             end()
 
         else {
 
             var spawn = window.mapChoosing.selected.spawn
-
-            player.robot.setVisualEffect(CelluloBluetoothEnums.VisualEffectConstSingle, "blue", player.pointAmount+3);
             player.robot.setGoalPose(spawn.x,spawn.y, 1,60,10)
         }
-
     }
 
     function end() {
@@ -63,7 +59,6 @@ Item {
         window.end.visible = true
         gameTimer.running = false
     }
-
 
     Timer {
 
@@ -77,17 +72,15 @@ Item {
         onTriggered: {
 
             if(seconds == 1 && minutes == 0) {
-                player.isReachingCheckPoint = false
                 player.init()
             }
 
-            if(seconds % 20 == 0 && seconds != 0) {
+            if(seconds % 15 == 0 && seconds != 0) {
 
                 rotationSignal();
             }
 
             if(seconds == 60) {
-
                 seconds = 0
                 minutes++
             }
@@ -102,27 +95,33 @@ Item {
 
         case 0:
             window.playZone.orientation = 25
-            player.warn(1)
+            player.warn(2)
+            warnNumber = 2
             break;
         case 1:
             window.playZone.orientation = 85
-            player.warn(2)
+            player.warn(3)
+            warnNumber = 3
             break;
         case 2:
             window.playZone.orientation = 145
-            player.warn(3)
+            player.warn(4)
+            warnNumber = 4
             break;
         case 3:
             window.playZone.orientation = 205
-            player.warn(4)
+            player.warn(5)
+            warnNumber = 5
             break;
         case 4:
             window.playZone.orientation = 265
-            player.warn(5)
+            player.warn(0)
+            warnNumber = 0
             break;
         case 5:
             window.playZone.orientation = 325
-            player.warn(6)
+            player.warn(1)
+            warnNumber = 1
             break;
         }
 
@@ -132,63 +131,93 @@ Item {
     Timer {
 
         property int current : 0
+        property int currentWhenFound : 1000
+        property bool found : false
+        property int up : 0
+        property bool bonusStop : false
+
         id: delay
         interval: 1000
         repeat: true
 
         onTriggered: {
 
-            // init
-            if(current == 0 || current == 1) {
+            current++
 
-                console.log("Initting angle timer...")
-                player.warn()
+            // If robot is already reaching a check point, cancel
+            if(player.isReachingCheckPoint) {
+                running = false
+                return
             }
 
-            // end
-            if(current == 5) {
+            // Warns the robot by setting the lights in orange one by one
+            if(current <= 5) {
 
-                if(player.isReachingCheckPoint)
-                    running = false
-
+                var toLight = warnNumber + current
+                if(toLight <= 5) {
+                    console.log(toLight)
+                    player.warnRed(toLight)
+                }
                 else {
-                    console.log("Bad orientation ! : "+player.robot.theta + " / " + window.playZone.orientation)
-                    failed = true
-                    player.robot.simpleVibrate(3,3,3,3000,3000)
-                    player.resetColor()
+                    player.warnRed(up)
+                    up++
                 }
             }
 
-            // go out of the timer if angle found
-            if(isRotationSimilar()) {
+            // If current equals 5 and the right angle hasn't been reached : too late !
+            if(current == 5 && !found) {
 
-                player.resetColor()
-                current = 0
-                running = false
+                console.log("Bad orientation ! : "+player.robot.theta + " / " + window.playZone.orientation)
+                player.failedRotation = true
+                player.wrong()
+                player.robot.simpleVibrate(3,3,3,3000,3000)
+
             }
+
+            // go out of the timer if angle found
+            if(isRotationSimilar() && !found && !player.failedRotation) {
+
+                player.rightAngleColour();
+                currentWhenFound = current
+                found = true
+            }
+
+            if(current - 1 === currentWhenFound)
+                running = false
 
             // end malus
-            if(current == 8) {
-
-                current = 0;
-                failed = false
-                player.isReachingCheckPoint = false
-                player.robot.clearTracking()
+            if(current == 8)
                 running = false
+        }
+        onRunningChanged: {
 
+            if(!running) {
+
+                if(player.failedRotation || found || bonusStop) {
+
+                    player.resetColor()
+                    player.robot.clearTracking()
+                    player.failedRotation = false
+                }
+
+                bonusStop = false
+                found = false
+                current = 0
+                up = 0
+                currentWhenFound = 1000
             }
-
-            current++
         }
     }
 
     function isRotationSimilar() {
 
+        console.log(player.robot.theta+" / "+window.playZone.orientation)
         var rotation = window.playZone.orientation
+
         if(player.robot.theta < rotation + 30 && player.robot.theta > rotation - 30)
             return true
 
-        if(rotation == 0 && player.robot.theta < 390 && player.robot.theta > 330)
+        if(rotation <= 25 && player.robot.theta < 390 && player.robot.theta > 330)
             return true
 
         return false

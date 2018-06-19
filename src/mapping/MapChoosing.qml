@@ -1,6 +1,6 @@
 
 import QtQuick 2.0
-import ".."
+import "../core"
 Rectangle {
 
     property MarioKartManager globalManager : null

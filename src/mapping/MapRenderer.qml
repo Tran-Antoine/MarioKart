@@ -2,10 +2,13 @@ import QtQuick 2.9
 
 Item {
 
-    property double scaling : 0.1
+    property double scaling : 0.07
     property int realWidth : 841
     property int realHigh : 594
     property Rectangle mapRendered : mapRendered
+
+    // Change to true if you want to see the map
+    visible: false
 
     Rectangle {
 

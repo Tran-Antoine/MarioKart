@@ -3,7 +3,7 @@ import QtQuick.Controls 1.2
 import QMLCache 1.0
 import Cellulo 1.0
 import QMLBluetoothExtras 1.0
-import ".."
+import "../core"
 
 Item {
 

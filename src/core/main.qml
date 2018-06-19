@@ -1,8 +1,8 @@
 import QtQuick 2.9
 import QtQuick.Window 2.2
-import "pannels"
-import "mapping"
-
+import "../pannels"
+import "../mapping"
+import "../bonus"
 Window {
 
     property MenuPannel menuPannel : menuPannel
@@ -138,6 +138,11 @@ Window {
 
         id: player
         globalManager : globalManager
+    }
+
+    BonusManager {
+
+        id: test
     }
 
 

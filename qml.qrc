@@ -1,8 +1,8 @@
 <RCC>
     <qresource prefix="/">
-        <file>src/main.qml</file>
-        <file>src/MarioKartManager.qml</file>
-        <file>src/Player.qml</file>
+        <file>src/core/main.qml</file>
+        <file>src/core/MarioKartManager.qml</file>
+        <file>src/core/Player.qml</file>
         <file>src/mapping/Map.qml</file>
         <file>src/mapping/MapChoosing.qml</file>
         <file>src/mapping/MapRenderer.qml</file>
@@ -25,5 +25,8 @@
         <file>assets/a2map5.svg</file>
         <file>assets/a1map6.json</file>
         <file>assets/a1map6.svg</file>
+        <file>assets/general/arrowRotate.jpeg</file>
+        <file>src/bonus/ResetAngleBonus.qml</file>
+        <file>src/bonus/BonusManager.qml</file>
     </qresource>
 </RCC>

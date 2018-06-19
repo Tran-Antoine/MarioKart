@@ -10,15 +10,17 @@ Item {
     property double yPos : 0
     property vector2d lastCheckPoint : window.mapChoosing.selected.spawn
     property bool isReachingCheckPoint : false
+    property bool failedRotation : false
     property int pointAmount : 0
+    property int bonus : 0
 
     onIsReachingCheckPointChanged: {
 
         if(isReachingCheckPoint)
-             robot.setVisualEffect(CelluloBluetoothEnums.VisualEffectConstAll, "red");
+             wrong()
 
         else
-            robot.setVisualEffect(CelluloBluetoothEnums.VisualEffectConstAll, "green");
+            robot.setVisualEffect(CelluloBluetoothEnums.VisualEffectConstAll, "green",0);
     }
 
     visible: false
@@ -110,20 +112,42 @@ Item {
 
     function init() {
 
-        console.log(robot.connectionStatus)
+        var spawn = window.mapChoosing.selected.spawn
 
-        robot.setGoalOrientation(25, 100)
-
+        robot.setGoalPose(spawn.x, spawn.y, 25,60,10)
         resetColor()
 
     }
 
     function resetColor() {
 
-        robot.setVisualEffect(CelluloBluetoothEnums.VisualEffectConstAll, "green");
+        robot.setVisualEffect(CelluloBluetoothEnums.VisualEffectConstAll, "green", 0);
     }
 
     function warn(number) {
+        console.log("Warned")
         robot.setVisualEffect(CelluloBluetoothEnums.VisualEffectConstSingle, "blue", number)
+    }
+
+    function warnRed(number) {
+        robot.setVisualEffect(CelluloBluetoothEnums.VisualEffectConstSingle, "red", number)
+    }
+
+    function rightAngleColour() {
+        robot.setVisualEffect(CelluloBluetoothEnums.VisualEffectConstAll, "blue", 0)
+    }
+
+    function wrong() {
+        robot.setVisualEffect(CelluloBluetoothEnums.VisualEffectConstAll, "red", 0)
+
+    }
+
+    function showScored() {
+        robot.setVisualEffect(CelluloBluetoothEnums.VisualEffectConstAll, "#CC2EFA", 0)
+    }
+
+    function resetBonus() {
+
+        bonus = -1
     }
 }
