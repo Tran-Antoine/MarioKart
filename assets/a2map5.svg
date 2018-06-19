@@ -9,13 +9,13 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="1189mm"
-   height="841mm"
-   viewBox="0 0 1189 841"
+   width="594mm"
+   height="420mm"
+   viewBox="0 0 594 420"
    version="1.1"
    id="svg8"
    inkscape:version="0.92.3 (unknown)"
-   sodipodi:docname="a1map4.svg">
+   sodipodi:docname="a2map5.svg">
   <defs
      id="defs2" />
   <sodipodi:namedview
@@ -25,9 +25,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.175"
-     inkscape:cx="1816.4813"
-     inkscape:cy="1327.9946"
+     inkscape:zoom="0.35"
+     inkscape:cx="714.28571"
+     inkscape:cy="788.57143"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -52,10 +52,10 @@
      inkscape:label="Calque 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,544)">
+     transform="translate(0,123)">
     <path
-       style="fill:none;stroke:#000000;stroke-width:400.86499023;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 182.94047,-108.19046 820.96423,-3.02381"
+       style="fill:none;stroke:#000000;stroke-width:127.365;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="M 0,207.79764 H 478.51784 L 476.24999,-29.571419 -3.7797618,-26.54761"
        id="path815"
        inkscape:connector-curvature="0" />
   </g>

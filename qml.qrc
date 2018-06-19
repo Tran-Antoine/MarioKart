@@ -1,0 +1,29 @@
+<RCC>
+    <qresource prefix="/">
+        <file>src/main.qml</file>
+        <file>src/MarioKartManager.qml</file>
+        <file>src/Player.qml</file>
+        <file>src/mapping/Map.qml</file>
+        <file>src/mapping/MapChoosing.qml</file>
+        <file>src/mapping/MapRenderer.qml</file>
+        <file>src/pannels/ConnectionPannel.qml</file>
+        <file>src/pannels/FinalPannel.qml</file>
+        <file>src/pannels/MenuPannel.qml</file>
+        <file>src/pannels/PlayerPannel.qml</file>
+        <file>assets/a1map1.json</file>
+        <file>assets/a1map2.json</file>
+        <file>assets/a1map3.json</file>
+        <file>assets/a1map4.json</file>
+        <file>assets/a1map1.svg</file>
+        <file>assets/a1map2.svg</file>
+        <file>assets/a1map3.svg</file>
+        <file>assets/a1map4.svg</file>
+        <file>assets/general/arrow.png</file>
+        <file>assets/general/controller.png</file>
+        <file>assets/general/icon.jpg</file>
+        <file>assets/a2map5.json</file>
+        <file>assets/a2map5.svg</file>
+        <file>assets/a1map6.json</file>
+        <file>assets/a1map6.svg</file>
+    </qresource>
+</RCC>

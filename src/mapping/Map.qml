@@ -24,19 +24,23 @@ Item {
         id: zoneEngine
         active: true
 
+        Component.onCompleted: console.log("ZONE LOADED")
+        
     }
 
     function loadZonesQML() {
 
         var zones = CelluloZoneJsonHandler.loadZonesQML(mapPath);
-        zones[0].borderThickness = 400
+        zones[0].borderThickness = 140
         console.log("Our zone : "+zones[0])
         zoneEngine.addNewZones(zones);
         console.log(zones[0].borderThickness)
+        zones[0].createPaintedItem(window.renderer.mapRendered, "#80FF0000", 1189, 841);
+        zoneEngine.addNewClient(player.robot)
+
     }
 
     Image {
-
 
         source: icon
 

@@ -117,7 +117,7 @@
                 "x": 726.333251953125,
                 "y": 485
             },
-            {iconmap1.jpg
+            {
                 "x": 739.6666259765625,
                 "y": 474
             },
@@ -463,6 +463,6 @@
             }
         ],
         "name": "SVG_DUMP_ZONE0",
-        "type": "POLYBEZIERBORDER"
+        "type": "POLYBEZIERINNER"
     }
 ]

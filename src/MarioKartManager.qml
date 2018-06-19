@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import Cellulo 1.0
 
 Item {
 
@@ -38,14 +39,30 @@ Item {
 
     onEndReached: {
 
+        console.log("reached !")
+        player.isReachingCheckPoint = true
+        player.pointAmount++
+
+        if(player.pointAmount == 4)
+            end()
+
+        else {
+
+            var spawn = window.mapChoosing.selected.spawn
+
+            player.robot.setVisualEffect(CelluloBluetoothEnums.VisualEffectConstSingle, "blue", player.pointAmount+3);
+            player.robot.setGoalPose(spawn.x,spawn.y, 1,60,10)
+        }
+
+    }
+
+    function end() {
         window.playZone.visible = false
         player.robot.reset()
         player.visible = false
         window.end.visible = true
         gameTimer.running = false
-
     }
-
 
 
     Timer {
@@ -69,25 +86,43 @@ Item {
                 rotationSignal();
             }
 
+            if(seconds == 60) {
+
+                seconds = 0
+                minutes++
+            }
+
             seconds ++
         }
     }
 
     function rotationSignal() {
 
-        switch(Math.floor(Math.random()*4)) {
+        switch(Math.floor(Math.random()*6)) {
 
         case 0:
             window.playZone.orientation = 25
+            player.warn(1)
             break;
         case 1:
-            window.playZone.orientation = 115
+            window.playZone.orientation = 85
+            player.warn(2)
             break;
         case 2:
-            window.playZone.orientation = 205
+            window.playZone.orientation = 145
+            player.warn(3)
             break;
         case 3:
-            window.playZone.orientation = 295
+            window.playZone.orientation = 205
+            player.warn(4)
+            break;
+        case 4:
+            window.playZone.orientation = 265
+            player.warn(5)
+            break;
+        case 5:
+            window.playZone.orientation = 325
+            player.warn(6)
             break;
         }
 
@@ -108,16 +143,20 @@ Item {
 
                 console.log("Initting angle timer...")
                 player.warn()
-                window.playZone.indication.visible = true
             }
 
             // end
             if(current == 5) {
 
-                console.log("Bad orientation ! : "+player.robot.theta + " / " + window.playZone.orientation)
-                failed = true
-                player.robot.simpleVibrate(3,3,3,3000,3000)
-                player.resetColor()
+                if(player.isReachingCheckPoint)
+                    running = false
+
+                else {
+                    console.log("Bad orientation ! : "+player.robot.theta + " / " + window.playZone.orientation)
+                    failed = true
+                    player.robot.simpleVibrate(3,3,3,3000,3000)
+                    player.resetColor()
+                }
             }
 
             // go out of the timer if angle found
@@ -125,7 +164,6 @@ Item {
 
                 player.resetColor()
                 current = 0
-                window.playZone.indication.visible = false
                 running = false
             }
 
@@ -134,7 +172,7 @@ Item {
 
                 current = 0;
                 failed = false
-                window.playZone.indication.visible = false
+                player.isReachingCheckPoint = false
                 player.robot.clearTracking()
                 running = false
 

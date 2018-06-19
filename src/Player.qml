@@ -10,6 +10,16 @@ Item {
     property double yPos : 0
     property vector2d lastCheckPoint : window.mapChoosing.selected.spawn
     property bool isReachingCheckPoint : false
+    property int pointAmount : 0
+
+    onIsReachingCheckPointChanged: {
+
+        if(isReachingCheckPoint)
+             robot.setVisualEffect(CelluloBluetoothEnums.VisualEffectConstAll, "red");
+
+        else
+            robot.setVisualEffect(CelluloBluetoothEnums.VisualEffectConstAll, "green");
+    }
 
     visible: false
 
@@ -20,14 +30,11 @@ Item {
 
         onConnectionStatusChanged: {
 
-
-
             if(connectionStatus === CelluloBluetoothEnums.ConnectionStatusConnected) {
                 robot.reset()
                 console.log("Connected !")
                 globalManager.robotConnected()
                 window.mapChoosing.selected.zoneEngine.addNewClient(robot);
-
             }
         }
 
@@ -51,8 +58,6 @@ Item {
 
             testWin()
             updateCheckPoints()
-            //console.log(window.mapChoosing.selected.zoneEngine.getAllZoneNames())
-            console.log(player.robot.x+" / "+player.robot.y)
         }
 
     }
@@ -92,10 +97,14 @@ Item {
         var distanceY = (endPoint.y) - (robot.y)
         var distanceSquared = distanceX * distanceX + distanceY * distanceY
 
-        if(Math.sqrt(distanceSquared) < 15) {
+        if(Math.sqrt(distanceSquared) < 20) {
 
-            robot.setGoalPose(endPoint.x, endPoint.y, 1,60,10)
-            globalManager.endReached()
+            console.log(isReachingCheckPoint)
+
+            if(!isReachingCheckPoint) {
+                robot.setGoalPose(endPoint.x, endPoint.y, 1,60,10)
+                globalManager.endReached()
+            }
         }
     }
 
@@ -111,21 +120,10 @@ Item {
 
     function resetColor() {
 
-        robot.setVisualEffect(CelluloBluetoothEnums.VisualEffectConstSingle, "green", 1);
-        robot.setVisualEffect(CelluloBluetoothEnums.VisualEffectConstSingle, "green", 2);
-        robot.setVisualEffect(CelluloBluetoothEnums.VisualEffectConstSingle, "green", 3);
+        robot.setVisualEffect(CelluloBluetoothEnums.VisualEffectConstAll, "green");
     }
 
-    function warn() {
-
-        robot.setVisualEffect(CelluloBluetoothEnums.VisualEffectConstSingle, "red", 1);
-        robot.setVisualEffect(CelluloBluetoothEnums.VisualEffectConstSingle, "red", 2);
-        robot.setVisualEffect(CelluloBluetoothEnums.VisualEffectConstSingle, "red", 3);
+    function warn(number) {
+        robot.setVisualEffect(CelluloBluetoothEnums.VisualEffectConstSingle, "blue", number)
     }
-
-
-
-
-
-
 }

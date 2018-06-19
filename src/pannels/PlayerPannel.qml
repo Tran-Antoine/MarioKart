@@ -12,24 +12,24 @@ Item {
 
     visible : false
 
-    Rectangle {
+//    Rectangle {
 
-        Image {
+//        Image {
 
-            visible: parent && globalManager.gameTimer >= 20
+//            visible: parent && globalManager.gameTimer >= 20
 
-            width: 180
-            height: 280
+//            width: 180
+//            height: 280
 
-            x: window.width / 2 - width / 2
-            y: window.height / 2 - height / 2
+//            x: window.width / 2 - width / 2
+//            y: window.height / 2 - height / 2
 
-            id: indication
-            source: "qrc:/assets/general/arrow.png"
-            rotation: orientation -25
+//            id: indication
+//            source: "qrc:/assets/general/arrow.png"
+//            rotation: orientation -25
 
-        }
-    }
+//        }
+//    }
 
     Rectangle {
 
@@ -120,7 +120,7 @@ Item {
     Rectangle {
 
         id: waitBeforeStart
-        visible: globalManager.gameTimer.seconds <= 5 && parent.visible
+        visible: globalManager.gameTimer.seconds <= 5 && parent.visible && globalManager.gameTimer.minutes === 0
         width: 300
         height: 300
         x: window.width / 2 - width / 2
@@ -179,7 +179,7 @@ Item {
 
             if(!player.isReachingCheckPoint && cursor.visible && !globalManager.failed) {
                 //console.log(player.robot)
-                player.robot.setGoalPose(player.robot.x + x, player.robot.y - y, player.robot.theta,100,100)
+                player.robot.setGoalPose(player.robot.x + 10*x, player.robot.y - 10*y, player.robot.theta,100,100)
             }
 
 
