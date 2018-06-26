@@ -105,17 +105,5 @@ Window {
         id: test
     }
 
-    Rectangle {
-
-        visible: player.speed == 70
-        color: "black"
-
-        x: 300
-        y: 200
-
-        width: 200
-        height: 200
-    }
-
 
 }

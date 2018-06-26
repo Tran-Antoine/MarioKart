@@ -13,7 +13,8 @@ Item {
     property int endReachedAmount : 0
     property int score : 0
     property int bonus : 0
-    property int speed : 70
+    property int maxSpeed : 120
+    property int boostSpeed : 0
     visible: false
 
     onIsReachingCheckPointChanged: {
@@ -79,7 +80,7 @@ Item {
 
         if(isRobotOnBonus(listBoosts)) {
 
-            speed = 110
+            boostSpeed = 80
             speedBoostTimer.running = true
         }
 
@@ -97,7 +98,7 @@ Item {
             if(!isReachingCheckPoint && !globalManager.rotationTimer.running)
                 resetColor()
 
-            speed = 70
+            boostSpeed = 0
         }
     }
 
@@ -141,7 +142,7 @@ Item {
 
             var distanceSquared = distanceX * distanceX + distanceY * distanceY
 
-            if(Math.sqrt(distanceSquared) < 40) {
+            if(Math.sqrt(distanceSquared) < 60) {
 
                 currentMap.spawn = vec2;
             }

@@ -10,7 +10,7 @@ Image {
 
     Text {
 
-        property double score: 60 - (globalManager.gameTimer.minutes * 15) - (globalManager.gameTimer.seconds / 4) + player.score
+        property double score: 70 - (globalManager.gameTimer.minutes * 15) - (globalManager.gameTimer.seconds / 4) + player.score
         x: window.width / 2 - width / 1.4
         y: window.height / 1.3
         width: 300
