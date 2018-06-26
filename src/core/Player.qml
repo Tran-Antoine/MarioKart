@@ -5,25 +5,25 @@ Item {
 
     property MarioKartManager globalManager : null
     property CelluloRobot robot : robot
-    property double speed : 30
     property double xPos : 0
     property double yPos : 0
     property vector2d lastCheckPoint : window.mapChoosing.selected.spawn
     property bool isReachingCheckPoint : false
     property bool failedRotation : false
-    property int pointAmount : 0
+    property int endReachedAmount : 0
+    property int score : 0
     property int bonus : 0
+    property int speed : 70
+    visible: false
 
     onIsReachingCheckPointChanged: {
 
         if(isReachingCheckPoint)
-             wrong()
+            wrong()
 
         else
             robot.setVisualEffect(CelluloBluetoothEnums.VisualEffectConstAll, "green",0);
     }
-
-    visible: false
 
     CelluloRobot {
 
@@ -42,17 +42,17 @@ Item {
 
         onZoneValueChanged : {
 
-            console.log("ZONE VALUE HAS CHANGED")
-            robot.setGoalPose(lastCheckPoint.x, lastCheckPoint.y, 1,60,10)
-            isReachingCheckPoint = true
+            console.log("Edge crossed...")
+            if(!isReachingCheckPoint) {
+                robot.setGoalPose(lastCheckPoint.x, lastCheckPoint.y, 1,100,100)
+                isReachingCheckPoint = true
+            }
 
         }
 
         onTrackingGoalReached: {
 
-            setCasualBackdriveAssistEnabled(true);
             clearTracking();
-            //console.log("CheckPoint reached ! Cellulo is now able to be moved")
             isReachingCheckPoint = false
         }
 
@@ -60,8 +60,69 @@ Item {
 
             testWin()
             updateCheckPoints()
+            testBonusReached()
         }
 
+    }
+
+    function testBonusReached() {
+
+        if(isReachingCheckPoint || globalManager.rotationTimer.running)
+            return
+
+        var listCoins = window.mapChoosing.selected.availableCoins
+
+        if(isRobotOnBonus(listCoins))
+            globalManager.coinTimer.running = true
+
+        var listBoosts = window.mapChoosing.selected.availableBoosts
+
+        if(isRobotOnBonus(listBoosts)) {
+
+            speed = 110
+            speedBoostTimer.running = true
+        }
+
+    }
+
+    Timer {
+
+        id: speedBoostTimer
+        interval: 5000
+        repeat: false
+
+        onTriggered: {
+
+            console.log("Reset of the boost")
+            if(!isReachingCheckPoint && !globalManager.rotationTimer.running)
+                resetColor()
+
+            speed = 70
+        }
+    }
+
+    function isRobotOnBonus(listPoint) {
+
+        for(var a = 0; a<listPoint.length;a++) {
+
+            var vector = listPoint[a]
+            var distanceX = (vector.x) - (robot.x)
+            var distanceY = (vector.y) - (robot.y)
+            var distanceSquared = distanceX * distanceX + distanceY * distanceY
+
+            if(Math.sqrt(distanceSquared) < 27) {
+
+                score += 1
+                listPoint.splice(listPoint.indexOf(vector),1)
+
+                if(!isReachingCheckPoint && !globalManager.rotationTimer.running)
+                    bonusFound()
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
     function updateCheckPoints() {
@@ -80,7 +141,7 @@ Item {
 
             var distanceSquared = distanceX * distanceX + distanceY * distanceY
 
-            if(Math.sqrt(distanceSquared) < 20) {
+            if(Math.sqrt(distanceSquared) < 40) {
 
                 currentMap.spawn = vec2;
             }
@@ -99,12 +160,10 @@ Item {
         var distanceY = (endPoint.y) - (robot.y)
         var distanceSquared = distanceX * distanceX + distanceY * distanceY
 
-        if(Math.sqrt(distanceSquared) < 20) {
-
-            console.log(isReachingCheckPoint)
+        if(Math.sqrt(distanceSquared) < 30) {
 
             if(!isReachingCheckPoint) {
-                robot.setGoalPose(endPoint.x, endPoint.y, 1,60,10)
+                //robot.setGoalPose(endPoint.x, endPoint.y, 1,60,10)
                 globalManager.endReached()
             }
         }
@@ -114,18 +173,17 @@ Item {
 
         var spawn = window.mapChoosing.selected.spawn
 
-        robot.setGoalPose(spawn.x, spawn.y, 25,60,10)
+        robot.setGoalPose(spawn.x, spawn.y, 25,100,10)
         resetColor()
-
     }
 
     function resetColor() {
-
+        console.log("Reset called")
         robot.setVisualEffect(CelluloBluetoothEnums.VisualEffectConstAll, "green", 0);
     }
 
     function warn(number) {
-        console.log("Warned")
+        console.log("Blue visual effect")
         robot.setVisualEffect(CelluloBluetoothEnums.VisualEffectConstSingle, "blue", number)
     }
 
@@ -139,14 +197,18 @@ Item {
 
     function wrong() {
         robot.setVisualEffect(CelluloBluetoothEnums.VisualEffectConstAll, "red", 0)
-
     }
 
-    function showScored() {
+    function showEndReached() {
         robot.setVisualEffect(CelluloBluetoothEnums.VisualEffectConstAll, "#CC2EFA", 0)
     }
 
-    function resetBonus() {
+    function bonusFound() {
+        robot.setVisualEffect(CelluloBluetoothEnums.VisualEffectConstAll, "yellow", 0)
+
+    }
+
+    function removeRotationBonus() {
 
         bonus = -1
     }

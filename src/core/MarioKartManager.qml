@@ -9,7 +9,8 @@ Item {
     signal endReached
 
     property Timer gameTimer : gameTimer
-    property Timer rotationTimer : delay
+    property Timer coinTimer : coinTimer
+    property Timer rotationTimer : warnTimer
     property int warnNumber : 0
 
     onRobotConnected: {
@@ -27,27 +28,31 @@ Item {
 
     onPlayStart: {
 
+        player.robot.reset()
         window.menuPannel.visible = false
         window.playZone.visible = true
         console.log("Starting the game !")
         gameTimer.running = true
         player.visible = true
-        player.robot.setGoalPose(player.lastCheckPoint.x, player.lastCheckPoint.y, 1,60,10)
+        player.robot.setCasualBackdriveAssistEnabled(true)
     }
 
     onEndReached: {
 
         console.log("reached !")
         player.isReachingCheckPoint = true
-        player.showScored()
-        player.pointAmount++
+        player.showEndReached()
+        player.endReachedAmount++
+        window.mapChoosing.selected.resetCoins()
+        window.mapChoosing.selected.resetBoosts()
 
-        if(player.pointAmount == 3)
+        if(player.endReachedAmount == 3)
             end()
 
         else {
 
-            var spawn = window.mapChoosing.selected.spawn
+            var spawn = window.mapChoosing.selected.firstSpawn
+            console.log(spawn.x+" / "+spawn.y)
             player.robot.setGoalPose(spawn.x,spawn.y, 1,60,10)
         }
     }
@@ -75,7 +80,7 @@ Item {
                 player.init()
             }
 
-            if(seconds % 15 == 0 && seconds != 0) {
+            if(seconds % 12 == 0 && seconds != 0) {
 
                 rotationSignal();
             }
@@ -90,6 +95,11 @@ Item {
     }
 
     function rotationSignal() {
+
+        if(player.isReachingCheckPoint)
+            return
+
+        player.resetColor()
 
         switch(Math.floor(Math.random()*6)) {
 
@@ -124,8 +134,7 @@ Item {
             warnNumber = 1
             break;
         }
-
-        delay.running = true
+        warnTimer.running = true
     }
 
     Timer {
@@ -136,7 +145,7 @@ Item {
         property int up : 0
         property bool bonusStop : false
 
-        id: delay
+        id: warnTimer
         interval: 1000
         repeat: true
 
@@ -146,6 +155,7 @@ Item {
 
             // If robot is already reaching a check point, cancel
             if(player.isReachingCheckPoint) {
+                console.log("Robot tries to reach a checkpoint, timer stopped")
                 running = false
                 return
             }
@@ -164,22 +174,23 @@ Item {
                 }
             }
 
-            // If current equals 5 and the right angle hasn't been reached : too late !
-            if(current == 5 && !found) {
-
-                console.log("Bad orientation ! : "+player.robot.theta + " / " + window.playZone.orientation)
-                player.failedRotation = true
-                player.wrong()
-                player.robot.simpleVibrate(3,3,3,3000,3000)
-
-            }
-
             // go out of the timer if angle found
             if(isRotationSimilar() && !found && !player.failedRotation) {
 
                 player.rightAngleColour();
                 currentWhenFound = current
                 found = true
+            }
+
+            // If current equals 5 and the right angle hasn't been reached : too late !
+            if(current == 5 && !found) {
+
+                console.log("Bad orientation ! :\n Robot orientation : "+player.robot.theta + "\nRequired : " + window.playZone.orientation)
+                player.failedRotation = true
+                player.wrong()
+                player.robot.clearTracking()
+                player.robot.simpleVibrate(3,3,3,3000,3000)
+
             }
 
             if(current - 1 === currentWhenFound)
@@ -189,6 +200,7 @@ Item {
             if(current == 8)
                 running = false
         }
+
         onRunningChanged: {
 
             if(!running) {
@@ -214,13 +226,26 @@ Item {
         console.log(player.robot.theta+" / "+window.playZone.orientation)
         var rotation = window.playZone.orientation
 
-        if(player.robot.theta < rotation + 30 && player.robot.theta > rotation - 30)
+        if(player.robot.theta < rotation + 20 && player.robot.theta > rotation - 20)
             return true
 
-        if(rotation <= 25 && player.robot.theta < 390 && player.robot.theta > 330)
+        if(rotation <= 25 && player.robot.theta < 390 && player.robot.theta > 340)
             return true
 
         return false
+    }
+
+    Timer {
+
+        id: coinTimer
+        repeat: false
+        interval: 2000
+
+        onTriggered: {
+
+            if(!player.isReachingCheckPoint && !rotationTimer.running)
+                player.resetColor()
+        }
     }
 
 }

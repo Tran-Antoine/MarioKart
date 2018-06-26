@@ -2,7 +2,6 @@ import QtQuick 2.0
 import QtQuick.Controls 2.0
 Item {
 
-    property ListModel bonus : bonus
     property list<QtObject> bonusArray
 
     Rectangle {
@@ -14,17 +13,22 @@ Item {
         x: window.width / 2 - width / 2
         y: window.height / 2 - height / 2
 
-        Button {
 
-            Text {
-                text: qsTr("Bonus")
-                color: "yellow"
-                font.bold: true
-                font.pointSize: 40
+            Image {
+                id: bonusImage
+
+                source: "qrc:/assets/general/bonus.png"
+
+                Button {
+
+                    opacity: 0
+                    width: bonusImage.width
+                    height: bonusImage.implicitHeight
+                    onClicked: executeBonus()
+                }
             }
 
-            onClicked: executeBonus()
-        }
+
     }
 
     ResetAngleBonus {

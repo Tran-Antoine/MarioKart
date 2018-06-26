@@ -8,7 +8,7 @@ Window {
     property MenuPannel menuPannel : menuPannel
     property ConnectionPannel connectionPannel : connectionPannel
     property MapChoosing mapChoosing : mapChoosing
-    property PlayerPannel playZone : playZone
+    property PlayPannel playZone : playZone
     property FinalPannel end : end
     property MapRenderer renderer : renderer
 
@@ -27,76 +27,38 @@ Window {
         globalManager : globalManager
     }
 
-//    Map {
-
-//        id: map1
-//        posX: 30
-//        mapPath: ":/assets/a1map1.json"
-//        mapSVG: "qrc:/assets/a1map1.svg"
-//        icon: "/assets/a1map1.svg"
-//        firstSpawn: Qt.vector2d(159, 333)
-//        checkPoints: [map1.firstSpawn,Qt.vector2d(527, 247)]
-//        endLocation: Qt.vector2d(30,200)
-//    }
-
-//    Map {
-
-//        id: map2
-//        posX: map1.posX + 250
-//        mapPath: ":/assets/a1map2.json"
-//        mapSVG: "qrc:/assets/a1map2.svg"
-//        icon: "/assets/a1map2.svg"
-//        firstSpawn: Qt.vector2d(159, 333)
-//        checkPoints: [map2.firstSpawn,Qt.vector2d(527, 247)]
-//        endLocation: Qt.vector2d(30,200)
-//    }
-
-//    Map {
-
-//        id: map3
-//        posX: map2.posX + 250
-//        mapPath: ":/assets/a1map3.json"
-//        mapSVG: "qrc:/assets/a1map3.svg"
-//        icon: "/assets/a1map3.svg"
-//        firstSpawn: Qt.vector2d(50,50)
-//        checkPoints: [map3.firstSpawn, Qt.vector2d(300, 200)]
-//        endLocation: Qt.vector2d(800,100)
-//    }
-
     Map {
 
-        id: map4
-        posX: 30
-        mapPath: ":/assets/a1map4.json"
-        mapSVG: "qrc:/assets/a1map4.svg"
-        icon: "/assets/a1map4.svg"
-        firstSpawn: Qt.vector2d(50, 550)
-        checkPoints: [map4.firstSpawn]
-        endLocation: Qt.vector2d(500,500)
-    }
+        id: map1
+        posX: 100
+        mapPath: ":/assets/aMaxmap7.json"
+        mapSVG: "qrc:/assets/aMaxmap7.svg"
+        icon: "/assets/aMaxmap7.svg"
+        firstSpawn: Qt.vector2d(110, 57)
+        checkPoints: [
+            map1.firstSpawn,
+            Qt.vector2d(545, 433),
+            Qt.vector2d(504, 916),
+            Qt.vector2d(1459, 741),
+            Qt.vector2d(1500,340),
+        ]
+        coins: [
+            Qt.vector2d(243, 517),
+            Qt.vector2d(191, 847),
+            Qt.vector2d(748, 595),
+            Qt.vector2d(1133, 709),
+            Qt.vector2d(1786, 304),
+            Qt.vector2d(997, 122)
+        ]
 
-    Map {
+        boosts: [
+            Qt.vector2d(673, 36),
+            Qt.vector2d(1208, 205),
+            Qt.vector2d(198, 969),
+            Qt.vector2d(1594, 692)
 
-        id: map5
-        posX: map4.posX + 250
-        mapPath: ":/assets/a2map5.json"
-        mapSVG: "qrc:/assets/a2map5.svg"
-        icon: "/assets/a2map5.svg"
-        firstSpawn: Qt.vector2d(50, 350)
-        checkPoints: [map5.firstSpawn]
-        endLocation: Qt.vector2d(300,300)
-    }
-
-    Map {
-
-        id: map6
-        posX: map5.posX + 250
-        mapPath: ":/assets/a1map6.json"
-        mapSVG: "qrc:/assets/a1map6.svg"
-        icon: "/assets/a1map6.svg"
-        firstSpawn: Qt.vector2d(50, 450)
-        checkPoints: [map5.firstSpawn]
-        endLocation: Qt.vector2d(674,80)
+        ]
+        endLocation: Qt.vector2d(1625,42)
     }
 
     MapChoosing {
@@ -105,9 +67,7 @@ Window {
         globalManager : globalManager
 
         maps: [
-            map4,
-            map5,
-            map6
+            map1
         ]
     }
 
@@ -117,7 +77,7 @@ Window {
         globalManager: globalManager
     }
 
-    PlayerPannel {
+    PlayPannel {
 
         id: playZone
         globalManager : globalManager
@@ -143,6 +103,18 @@ Window {
     BonusManager {
 
         id: test
+    }
+
+    Rectangle {
+
+        visible: player.speed == 70
+        color: "black"
+
+        x: 300
+        y: 200
+
+        width: 200
+        height: 200
     }
 
 

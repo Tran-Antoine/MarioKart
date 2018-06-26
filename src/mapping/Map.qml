@@ -5,11 +5,17 @@ import Cellulo 1.0
 
 Item {
 
-    property var crystals : []
+    property var coins : []
+    property var availableCoins : []
+
+    property var boosts : []
+    property var availableBoosts : []
+
     property var checkPoints : [firstSpawn]
     property vector2d spawn : firstSpawn
     property vector2d firstSpawn : null
     property vector2d endLocation : null
+
     property string mapPath : null
     property string mapSVG : null
     property string icon : null
@@ -31,7 +37,7 @@ Item {
     function loadZonesQML() {
 
         var zones = CelluloZoneJsonHandler.loadZonesQML(mapPath);
-        zones[0].borderThickness = 140
+        zones[0].borderThickness = 160
         console.log("Our zone : "+zones[0])
         zoneEngine.addNewZones(zones);
         console.log(zones[0].borderThickness)
@@ -44,7 +50,7 @@ Item {
 
         source: icon
 
-        width: 200
+        width: 390
         height: 200
 
         x:  posX
@@ -72,10 +78,31 @@ Item {
                 console.log("Map has been chosen !\nMap source : "+mapPath)
                 window.mapChoosing.selected = parent.parent
                 loadZonesQML()
+                resetCoins()
+                resetBoosts()
                 globalManager.mapChosen()
             }
         }
 
+    }
+
+    function resetCoins() {
+
+        // We can't just do "availableCoins = coins" because of this stupid feature that would "link" the two variables
+        availableCoins = []
+
+        for(var a = 0; a<coins.length; a++)
+            availableCoins.push(coins[a])
+
+        console.log(availableCoins.length+" "+coins.length)
+    }
+
+    function resetBoosts() {
+
+        availableBoosts = []
+
+        for(var a = 0; a<boosts.length; a++)
+            availableBoosts.push(boosts[a])
     }
 
 }
