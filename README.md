@@ -1,6 +1,6 @@
-#Mario Kart - The Famous game created with Cellulo robots
+# Mario Kart - The Famous game created with Cellulo robots
 
-**A Game created by Antoine TRAN**
+**Game created by Antoine TRAN**
 
 ## Information
 
@@ -43,7 +43,6 @@ The purpose of this 2D Game is to reach three times the end of the circuit. To m
 - Every 12 seconds, a blue led will appear. A timer is represented by the red leds that will appear, and you have to point the blue led towards the north of the map before all the leds become red, otherwise you will get stuck for 3 seconds
 
 - You can also notice coins and mushrooms on the circuit. You can only take these bonus once per round.
-
 Both give you points at the end of the race, and in addition the mushrooms increases your speed during 5 seconds of 66%
 
 **Checkpoints**
