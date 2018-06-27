@@ -1,4 +1,4 @@
-# Mario Kart - The Famous game created with Cellulo robots
+# Mario Kart - The Famous game created with robots
 
 **Game created by Antoine TRAN**
 
@@ -51,5 +51,11 @@ Both give you points at the end of the race, and in addition the mushrooms incre
 
 Your initial score is 92. After 3 minutes, you start loosing 1 point every 4 seconds, and each bonus gives you one point back.
 
-Therefore the final calculation is : *92 - (minutes -3) * 15 - seconds / 4 + bonusAmount*
-According with that, the best score would be approximately 4:30 of race (nearly impossible to do less) and 30 bonus (all of them) which gives `92 - 15 - ~7 + 30 = 100`. Assuming that you should normally take between 5 and 10 minutes to finish the race, you should usually get between 20 and 90 points
+Therefore the final calculation is : 
+
+**92 - (minutes -3) * 15 - seconds / 4 + bonusAmount**
+
+
+According with that, the best score would be approximately 4:30 of race (nearly impossible to do less) and 30 bonus (all of them) which gives `92 - 15 - ~7 + 30 = 100`. 
+
+Assuming that you should normally take between 5 and 10 minutes to finish the race, you should usually get between 20 and 90 points
