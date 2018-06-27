@@ -53,7 +53,7 @@ Item {
 
             var spawn = window.mapChoosing.selected.firstSpawn
             console.log(spawn.x+" / "+spawn.y)
-            player.robot.setGoalPose(spawn.x,spawn.y, 1,60,10)
+            player.robot.setGoalPose(spawn.x,spawn.y, 1,180,100)
         }
     }
 

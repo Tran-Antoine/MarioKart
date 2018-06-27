@@ -10,12 +10,12 @@ Image {
 
     Text {
 
-        property double score: 70 - (globalManager.gameTimer.minutes * 15) - (globalManager.gameTimer.seconds / 4) + player.score
+        property double score: 100 - ((globalManager.gameTimer.minutes - 3) * 15) - (globalManager.gameTimer.seconds / 4) + player.score
         x: window.width / 2 - width / 1.4
         y: window.height / 1.3
         width: 300
         height: 100
-        text: qsTr("Your score is "+Math.floor(score <= 0 ? 0 : score))
+        text: qsTr("Your score is "+Math.floor(score <= 0 ? 0 : score)+" "+globalManager.gameTimer.minutes+" : "+globalManager.gameTimer.seconds)
         font.bold: true
         font.pointSize: 60
         color: "#FFBF00"

@@ -28,7 +28,7 @@
 
 The purpose of this 2D Game is to reach three times the end of the circuit. To move and rotate the robot, let's see how the pannel works :
 
-- The circle at the bottom left of the screen helps to move the robot. Place a finger around the circle, the angle will be calculated and the robot will move in the right direction. The further from the center of the circle you are, the faster the robot will move
+- The circle at the bottom left of the screen helps moving the robot. Place a finger around the circle, the angle will be calculated and the robot will move in the right direction. The further from the center of the circle you are, the faster the robot will move
 
 - The two arrows at the bottom right are used to rotate the robot. We'll se later the utility of rotating the robot
 
@@ -40,15 +40,13 @@ The purpose of this 2D Game is to reach three times the end of the circuit. To m
 
 ## GamePlay
 
-- Every 12 seconds, a blue led will appear. A timer is represented by the red leds that will appear, and you have to point the blue led towards the north of the map before all the leds become red, otherwise you will get stuck for 3 seconds
+- Every 12 seconds, a blue led will appear. A timer is represented by the red leds that will appear, and you have to point the blue led towards the north of the map before all the leds become red, otherwise you will get stuck during a period of 3 seconds
 
 - You can also notice coins and mushrooms on the circuit. You can only take these bonus once per round.
 Both give you points at the end of the race, and in addition the mushrooms increases your speed during 5 seconds of 66%
 
-**Checkpoints**
-
-Each map contains checkpoints, as soon as you cross the border of the road the robot will be moved to the last checkpoint
+- Each map contains checkpoints, as soon as you cross the border of the road the robot will be moved to the last checkpoint
 
 ## Score calculation
 
-Your initial score is 100. Each 4 seconds you loose one point, and each bonus gives you one point back.
+Your initial score is 100. After 4 minutes, you start loosing 1 point every 4 seconds, and each bonus gives you one point back. Assuming that you should normally take between 6 and 10 minutes to finish the race, according with the approximation that you can take 6 bonus per round, with a total of 18 back points, your score should be between 20 and 80.

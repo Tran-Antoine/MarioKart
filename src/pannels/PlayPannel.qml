@@ -171,20 +171,19 @@ Item {
         onUpdated: {
 
             var angle = findAngle(cursor,moveZone)
-            var rAngle = angle * Math.PI / 180
+            var radAngle = angle * Math.PI / 180
 
-            var x = 100 * Math.cos(rAngle)
-            var y = 100 * Math.sin(rAngle)
+            var x = 1000 * Math.cos(radAngle)
+            var y = 1000 * Math.sin(radAngle)
 
 
             var distanceSquared = findDistanceSquared(moveZone, cursor)
 
             // 150 is the real distance between the two circles
             var currentSpeed = (Math.sqrt(distanceSquared) / 150) * (player.maxSpeed - 50) + 50
-
-            console.log(Math.sqrt(distanceSquared)+" "+currentSpeed)
+            
             if(cursor.visible && canMove())
-                player.robot.setGoalPose(player.robot.x + (10*x), player.robot.y - (10*y), player.robot.theta,currentSpeed,100)
+                player.robot.setGoalPose(player.robot.x + x, player.robot.y - y, player.robot.theta,currentSpeed+player.boostSpeed,100)
         }
     }
 

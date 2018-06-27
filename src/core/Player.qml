@@ -13,7 +13,7 @@ Item {
     property int endReachedAmount : 0
     property int score : 0
     property int bonus : 0
-    property int maxSpeed : 120
+    property int maxSpeed : 140
     property int boostSpeed : 0
     visible: false
 
@@ -63,7 +63,6 @@ Item {
             updateCheckPoints()
             testBonusReached()
         }
-
     }
 
     function testBonusReached() {
@@ -119,11 +118,11 @@ Item {
                 if(!isReachingCheckPoint && !globalManager.rotationTimer.running)
                     bonusFound()
 
-                return true;
+                return true
             }
         }
 
-        return false;
+        return false
     }
 
     function updateCheckPoints() {
@@ -164,7 +163,6 @@ Item {
         if(Math.sqrt(distanceSquared) < 30) {
 
             if(!isReachingCheckPoint) {
-                //robot.setGoalPose(endPoint.x, endPoint.y, 1,60,10)
                 globalManager.endReached()
             }
         }
@@ -206,11 +204,9 @@ Item {
 
     function bonusFound() {
         robot.setVisualEffect(CelluloBluetoothEnums.VisualEffectConstAll, "yellow", 0)
-
     }
 
     function removeRotationBonus() {
-
         bonus = -1
     }
 }

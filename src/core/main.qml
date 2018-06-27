@@ -42,6 +42,7 @@ Window {
             Qt.vector2d(1459, 741),
             Qt.vector2d(1500,340),
         ]
+
         coins: [
             Qt.vector2d(243, 517),
             Qt.vector2d(191, 847),
@@ -56,8 +57,8 @@ Window {
             Qt.vector2d(1208, 205),
             Qt.vector2d(198, 969),
             Qt.vector2d(1594, 692)
-
         ]
+
         endLocation: Qt.vector2d(1625,42)
     }
 
@@ -102,7 +103,7 @@ Window {
 
     BonusManager {
 
-        id: test
+        id: bonusManagerUnfinished
     }
 
 
