@@ -2,6 +2,8 @@ import QtQuick 2.0
 import QtQuick.Controls 2.0
 Item {
 
+    // The file is made for creating many bonus, only one has been done yet though
+
     property list<QtObject> bonusArray
 
     Rectangle {

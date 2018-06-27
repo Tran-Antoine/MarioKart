@@ -60,7 +60,6 @@ Item {
                     rotationTimer.rotation = -40
                     rotationTimer.running = true
                 }
-                else console.log("Can't move")
             }
 
             onReleased: {
@@ -97,8 +96,6 @@ Item {
                     rotationTimer.rotation = 40
                     rotationTimer.running = true
                 }
-                else console.log("Can't move")
-
             }
 
             onReleased: rotationTimer.running = false
@@ -141,8 +138,8 @@ Item {
         width: 220
         height: 220
 
-        x: 20
-        y: window.height - height -20
+        x: 30
+        y: window.height - height - 30
 
         Image {
 
@@ -179,7 +176,7 @@ Item {
 
             var distanceSquared = findDistanceSquared(moveZone, cursor)
 
-            // 150 is the real distance between the two circles
+            // 150 is the real max distance between the two circles
             var currentSpeed = (Math.sqrt(distanceSquared) / 150) * (player.maxSpeed - 50) + 50
             
             if(cursor.visible && canMove())
@@ -191,7 +188,7 @@ Item {
 
         property vector2d center : Qt.vector2d(x + width / 2, y + height / 2)
         id: cursor
-        x: moveZone.touch.x - 20
+        x: moveZone.touch.x - 30
         y: moveZone.touch.y + window.height / 1.7
         radius: 1000
         color: "#00FFFF"
@@ -223,8 +220,6 @@ Item {
             text: "I am stuck"
 
             onClicked: {
-
-                console.log("The robot was reaching a checkpoint : "+player.isReachingCheckPoint)
                 player.robot.clearTracking()
                 player.isReachingCheckPoint = false
             }

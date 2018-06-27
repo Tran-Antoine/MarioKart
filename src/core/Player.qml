@@ -30,6 +30,7 @@ Item {
 
         // connectionStatus is a variable from CelluloRobot file -> enum { Disconnected, TryingToConnect, Connected
         id: robot
+        property int currentZoneValue : 1
 
         onConnectionStatusChanged: {
 
@@ -43,12 +44,31 @@ Item {
 
         onZoneValueChanged : {
 
-            console.log("Edge crossed...")
-            if(!isReachingCheckPoint) {
-                robot.setGoalPose(lastCheckPoint.x, lastCheckPoint.y, 1,100,100)
-                isReachingCheckPoint = true
-            }
+            console.log("ZONE VALUE CHANGED : "+value)
+            currentZoneValue = value
 
+            if(value != 1)
+                frameWaitChecker.running = true
+        }
+
+        Timer {
+
+            id: frameWaitChecker
+            interval: 50//boostSpeed == 0 ? 50 : 30
+            repeat: false
+
+            onTriggered: {
+
+                if(robot.currentZoneValue == 0) {
+
+                    if(!isReachingCheckPoint) {
+
+                        robot.setGoalPose(lastCheckPoint.x, lastCheckPoint.y, 1,100,100)
+                        isReachingCheckPoint = true
+                    }
+                }
+                else console.log("Bug happened, zone value : "+robot.currentZoneValue)
+            }
         }
 
         onTrackingGoalReached: {
@@ -93,7 +113,6 @@ Item {
 
         onTriggered: {
 
-            console.log("Reset of the boost")
             if(!isReachingCheckPoint && !globalManager.rotationTimer.running)
                 resetColor()
 
@@ -177,12 +196,10 @@ Item {
     }
 
     function resetColor() {
-        console.log("Reset called")
         robot.setVisualEffect(CelluloBluetoothEnums.VisualEffectConstAll, "green", 0);
     }
 
     function warn(number) {
-        console.log("Blue visual effect")
         robot.setVisualEffect(CelluloBluetoothEnums.VisualEffectConstSingle, "blue", number)
     }
 

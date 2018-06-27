@@ -39,7 +39,6 @@ Item {
 
     onEndReached: {
 
-        console.log("reached !")
         player.isReachingCheckPoint = true
         player.showEndReached()
         player.endReachedAmount++
@@ -52,7 +51,6 @@ Item {
         else {
 
             var spawn = window.mapChoosing.selected.firstSpawn
-            console.log(spawn.x+" / "+spawn.y)
             player.robot.setGoalPose(spawn.x,spawn.y, 1,180,100)
         }
     }
@@ -155,7 +153,6 @@ Item {
 
             // If robot is already reaching a check point, cancel
             if(player.isReachingCheckPoint) {
-                console.log("Robot tries to reach a checkpoint, timer stopped")
                 running = false
                 return
             }
@@ -165,7 +162,6 @@ Item {
 
                 var toLight = warnNumber + current
                 if(toLight <= 5) {
-                    console.log(toLight)
                     player.warnRed(toLight)
                 }
                 else {
@@ -223,7 +219,6 @@ Item {
 
     function isRotationSimilar() {
 
-        console.log(player.robot.theta+" / "+window.playZone.orientation)
         var rotation = window.playZone.orientation
 
         if(player.robot.theta < rotation + 20 && player.robot.theta > rotation - 20)
