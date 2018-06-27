@@ -46,4 +46,10 @@ The purpose of this 2D Game is to reach three times the end of the circuit. To m
 
 Both give you points at the end of the race, and in addition the mushrooms increases your speed during 5 seconds of 66%
 
+**Checkpoints**
 
+Each map contains checkpoints, as soon as you cross the border of the road the robot will be moved to the last checkpoint
+
+## Score calculation
+
+Your initial score is 100. Each 4 seconds you loose one point, and each bonus gives you one point back.
