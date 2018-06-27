@@ -1,4 +1,4 @@
-import QtQuick 2.0
+﻿import QtQuick 2.0
 import Cellulo 1.0
 
 Item {
@@ -79,67 +79,21 @@ Item {
 
         onPoseChanged : {
 
-            testWin()
+            globalManager.testWin()
             updateCheckPoints()
-            testBonusReached()
+            window.bonusManager.testBonusReached()
         }
     }
 
-    function testBonusReached() {
+    function isRotationSimilar() {
 
-        if(isReachingCheckPoint || globalManager.rotationTimer.running)
-            return
+        var rotation = window.playZone.orientation
 
-        var listCoins = window.mapChoosing.selected.availableCoins
+        if(player.robot.theta < rotation + 20 && player.robot.theta > rotation - 20)
+            return true
 
-        if(isRobotOnBonus(listCoins))
-            globalManager.coinTimer.running = true
-
-        var listBoosts = window.mapChoosing.selected.availableBoosts
-
-        if(isRobotOnBonus(listBoosts)) {
-
-            boostSpeed = 80
-            speedBoostTimer.running = true
-        }
-
-    }
-
-    Timer {
-
-        id: speedBoostTimer
-        interval: 5000
-        repeat: false
-
-        onTriggered: {
-
-            if(!isReachingCheckPoint && !globalManager.rotationTimer.running)
-                resetColor()
-
-            boostSpeed = 0
-        }
-    }
-
-    function isRobotOnBonus(listPoint) {
-
-        for(var a = 0; a<listPoint.length;a++) {
-
-            var vector = listPoint[a]
-            var distanceX = (vector.x) - (robot.x)
-            var distanceY = (vector.y) - (robot.y)
-            var distanceSquared = distanceX * distanceX + distanceY * distanceY
-
-            if(Math.sqrt(distanceSquared) < 27) {
-
-                score += 1
-                listPoint.splice(listPoint.indexOf(vector),1)
-
-                if(!isReachingCheckPoint && !globalManager.rotationTimer.running)
-                    bonusFound()
-
-                return true
-            }
-        }
+        if(rotation <= 25 && player.robot.theta < 390 && player.robot.theta > 340)
+            return true
 
         return false
     }
@@ -167,26 +121,6 @@ Item {
         }
     }
 
-    function testWin() {
-
-        if(globalManager.gameTimer.running == false)
-            return
-
-        var currentMap = window.mapChoosing.selected
-        var endPoint = currentMap.endLocation
-
-        var distanceX = (endPoint.x) - (robot.x)
-        var distanceY = (endPoint.y) - (robot.y)
-        var distanceSquared = distanceX * distanceX + distanceY * distanceY
-
-        if(Math.sqrt(distanceSquared) < 30) {
-
-            if(!isReachingCheckPoint) {
-                globalManager.endReached()
-            }
-        }
-    }
-
     function init() {
 
         var spawn = window.mapChoosing.selected.spawn
@@ -199,15 +133,15 @@ Item {
         robot.setVisualEffect(CelluloBluetoothEnums.VisualEffectConstAll, "green", 0);
     }
 
-    function warn(number) {
+    function blueWarn(number) {
         robot.setVisualEffect(CelluloBluetoothEnums.VisualEffectConstSingle, "blue", number)
     }
 
-    function warnRed(number) {
+    function redLedsTimer(number) {
         robot.setVisualEffect(CelluloBluetoothEnums.VisualEffectConstSingle, "red", number)
     }
 
-    function rightAngleColour() {
+    function angleFound() {
         robot.setVisualEffect(CelluloBluetoothEnums.VisualEffectConstAll, "blue", 0)
     }
 
@@ -223,7 +157,7 @@ Item {
         robot.setVisualEffect(CelluloBluetoothEnums.VisualEffectConstAll, "yellow", 0)
     }
 
-    function removeRotationBonus() {
+    function removeBonus() {
         bonus = -1
     }
 }

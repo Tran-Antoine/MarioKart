@@ -12,6 +12,7 @@ Item {
     property Timer coinTimer : coinTimer
     property Timer rotationTimer : warnTimer
     property int warnNumber : 0
+    property int rounds : 3
 
     onRobotConnected: {
 
@@ -22,8 +23,10 @@ Item {
 
     onMapChosen: {
 
-        window.mapChoosing.visible = false
+        var mapChoosing = window.mapChoosing
+        mapChoosing.visible = false
         window.menuPannel.visible = true
+        player.robot.setGoalPose(mapChoosing.selected.firstSpawn.x,mapChoosing.selected.firstSpawn.y,player.robot.theta, 180, 180)
     }
 
     onPlayStart: {
@@ -31,7 +34,6 @@ Item {
         player.robot.reset()
         window.menuPannel.visible = false
         window.playZone.visible = true
-        console.log("Starting the game !")
         gameTimer.running = true
         player.visible = true
         player.robot.setCasualBackdriveAssistEnabled(true)
@@ -45,7 +47,7 @@ Item {
         window.mapChoosing.selected.resetCoins()
         window.mapChoosing.selected.resetBoosts()
 
-        if(player.endReachedAmount == 3)
+        if(player.endReachedAmount == rounds)
             end()
 
         else {
@@ -103,32 +105,32 @@ Item {
 
         case 0:
             window.playZone.orientation = 25
-            player.warn(2)
+            player.blueWarn(2)
             warnNumber = 2
             break;
         case 1:
             window.playZone.orientation = 85
-            player.warn(3)
+            player.blueWarn(3)
             warnNumber = 3
             break;
         case 2:
             window.playZone.orientation = 145
-            player.warn(4)
+            player.blueWarn(4)
             warnNumber = 4
             break;
         case 3:
             window.playZone.orientation = 205
-            player.warn(5)
+            player.blueWarn(5)
             warnNumber = 5
             break;
         case 4:
             window.playZone.orientation = 265
-            player.warn(0)
+            player.blueWarn(0)
             warnNumber = 0
             break;
         case 5:
             window.playZone.orientation = 325
-            player.warn(1)
+            player.blueWarn(1)
             warnNumber = 1
             break;
         }
@@ -162,18 +164,18 @@ Item {
 
                 var toLight = warnNumber + current
                 if(toLight <= 5) {
-                    player.warnRed(toLight)
+                    player.redLedsTimer(toLight)
                 }
                 else {
-                    player.warnRed(up)
+                    player.redLedsTimer(up)
                     up++
                 }
             }
 
             // go out of the timer if angle found
-            if(isRotationSimilar() && !found && !player.failedRotation) {
+            if(player.isRotationSimilar() && !found && !player.failedRotation) {
 
-                player.rightAngleColour();
+                player.angleFound();
                 currentWhenFound = current
                 found = true
             }
@@ -186,7 +188,6 @@ Item {
                 player.wrong()
                 player.robot.clearTracking()
                 player.robot.simpleVibrate(3,3,3,3000,3000)
-
             }
 
             if(current - 1 === currentWhenFound)
@@ -217,19 +218,6 @@ Item {
         }
     }
 
-    function isRotationSimilar() {
-
-        var rotation = window.playZone.orientation
-
-        if(player.robot.theta < rotation + 20 && player.robot.theta > rotation - 20)
-            return true
-
-        if(rotation <= 25 && player.robot.theta < 390 && player.robot.theta > 340)
-            return true
-
-        return false
-    }
-
     Timer {
 
         id: coinTimer
@@ -240,6 +228,26 @@ Item {
 
             if(!player.isReachingCheckPoint && !rotationTimer.running)
                 player.resetColor()
+        }
+    }
+
+    function testWin() {
+
+        if(gameTimer.running == false)
+            return
+
+        var currentMap = window.mapChoosing.selected
+        var endPoint = currentMap.endLocation
+
+        var distanceX = (endPoint.x) - (player.robot.x)
+        var distanceY = (endPoint.y) - (player.robot.y)
+        var distanceSquared = distanceX * distanceX + distanceY * distanceY
+
+        if(Math.sqrt(distanceSquared) < 30) {
+
+            if(!player.isReachingCheckPoint) {
+                globalManager.endReached()
+            }
         }
     }
 

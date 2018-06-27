@@ -40,6 +40,65 @@ Item {
         Component.onCompleted: bonusArray.push(resetBonus)
     }
 
+    function testBonusReached() {
+
+        if(player.isReachingCheckPoint || globalManager.rotationTimer.running)
+            return
+
+        var listCoins = window.mapChoosing.selected.availableCoins
+
+        if(isRobotOnBonus(listCoins))
+            globalManager.coinTimer.running = true
+
+        var listBoosts = window.mapChoosing.selected.availableBoosts
+
+        if(isRobotOnBonus(listBoosts)) {
+
+            player.boostSpeed = 80
+            speedBoostTimer.running = true
+        }
+
+    }
+
+    function isRobotOnBonus(listPoint) {
+
+        for(var a = 0; a<listPoint.length;a++) {
+
+            var vector = listPoint[a]
+            var distanceX = (vector.x) - (player.robot.x)
+            var distanceY = (vector.y) - (player.robot.y)
+            var distanceSquared = distanceX * distanceX + distanceY * distanceY
+
+            if(Math.sqrt(distanceSquared) < 27) {
+
+                player.score += 1
+                listPoint.splice(listPoint.indexOf(vector),1)
+
+                if(!isReachingCheckPoint && !globalManager.rotationTimer.running)
+                    player.bonusFound()
+
+                return true
+            }
+        }
+
+        return false
+    }
+
+    Timer {
+
+        id: speedBoostTimer
+        interval: 5000
+        repeat: false
+
+        onTriggered: {
+
+            if(!player.isReachingCheckPoint && !globalManager.rotationTimer.running)
+                player.resetColor()
+
+            player.boostSpeed = 0
+        }
+    }
+
     function executeBonus() {
 
         if(player.bonus != -1) {

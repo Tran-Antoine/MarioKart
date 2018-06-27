@@ -1,5 +1,10 @@
 import QtQuick 2.9
 
+/* THIS FILE IS NOT USED IN THE CODE
+
+   If you want to render your map on the screen, you can set up this file and use it
+  */
+
 Item {
 
     property double scaling : 0.07
@@ -13,10 +18,11 @@ Item {
     Rectangle {
 
         id: mapRendered
-        x: 0//-1895
-        y: 0//-1350
+        x: 0
+        y: 0
         width: sourceImage.width * scaling
         height: sourceImage.height * scaling
+
         Image {
             id: sourceImage
             source: window.mapChoosing.selected.mapSVG
@@ -28,6 +34,7 @@ Item {
         }
     }
     Image {
+
         id: car
         source: "/assets/general/icon.jpg"
 

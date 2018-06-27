@@ -12,7 +12,7 @@ Item {
 
             globalManager.rotationTimer.bonusStop = true
             globalManager.rotationTimer.running = false
-            player.removeRotationBonus()
+            player.removeBonus()
         }
     }
 }

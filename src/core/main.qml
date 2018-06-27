@@ -10,7 +10,7 @@ Window {
     property MapChoosing mapChoosing : mapChoosing
     property PlayPannel playZone : playZone
     property FinalPannel end : end
-    property MapRenderer renderer : renderer
+    property BonusManager bonusManager : bonusManager
 
     id: window
     visible: true
@@ -84,11 +84,6 @@ Window {
         globalManager : globalManager
     }
 
-    MapRenderer {
-
-        id: renderer
-    }
-
     FinalPannel {
 
         id: end
@@ -103,7 +98,7 @@ Window {
 
     BonusManager {
 
-        id: bonusManagerUnfinished
+        id: bonusManager
     }
 
 
