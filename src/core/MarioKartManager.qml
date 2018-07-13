@@ -80,7 +80,7 @@ Item {
                 player.init()
             }
 
-            if(seconds % 12 == 0 && seconds != 0) {
+            if(seconds % 16 == 0 && seconds != 0) {
 
                 rotationSignal();
             }

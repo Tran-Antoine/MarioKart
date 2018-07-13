@@ -47,8 +47,9 @@ Item {
 
         var listCoins = window.mapChoosing.selected.availableCoins
 
-        if(isRobotOnBonus(listCoins))
+        if(isRobotOnBonus(listCoins)) {
             globalManager.coinTimer.running = true
+        }
 
         var listBoosts = window.mapChoosing.selected.availableBoosts
 
@@ -74,7 +75,7 @@ Item {
                 player.score += 1
                 listPoint.splice(listPoint.indexOf(vector),1)
 
-                if(!isReachingCheckPoint && !globalManager.rotationTimer.running)
+                if(!player.isReachingCheckPoint && !globalManager.rotationTimer.running)
                     player.bonusFound()
 
                 return true

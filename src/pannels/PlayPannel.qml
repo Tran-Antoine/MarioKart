@@ -10,8 +10,18 @@ Item {
     property MultiPointTouchArea moveZone : moveZone
     property MarioKartManager globalManager : null
     property bool started : false
+    property double rotationToApply : 0
+    property int xToApply : 0
+    property int yToApply : 0
+    property int currentSpeedToApply : 0
+    signal move
 
     visible : false
+
+    onMove: {
+        console.log(rotationToApply)
+        player.robot.setGoalPose(player.robot.x + xToApply, player.robot.y - yToApply, player.robot.theta + rotationToApply,currentSpeedToApply+player.boostSpeed,100)
+    }
 
     Rectangle {
 
@@ -57,14 +67,16 @@ Item {
             onPressed: {
 
                 if(canMove()) {
-                    rotationTimer.rotation = -40
+                    rotationTimer.rotation = -60
                     rotationTimer.running = true
                 }
             }
 
             onReleased: {
 
+                rotationToApply = 0
                 rotationTimer.running = false
+                rotationToApply = 0
             }
         }
     }
@@ -93,12 +105,15 @@ Item {
             onPressed: {
 
                 if(canMove()) {
-                    rotationTimer.rotation = 40
+                    rotationTimer.rotation = 60
                     rotationTimer.running = true
                 }
             }
 
-            onReleased: rotationTimer.running = false
+            onReleased: {
+                rotationTimer.running = false
+                rotationToApply = 0
+            }
 
         }
     }
@@ -109,7 +124,7 @@ Item {
         property double rotation : 0
 
         repeat: true
-        interval: 64
+        interval: 50
 
         onTriggered: {
 
@@ -120,11 +135,15 @@ Item {
 
             if(!player.isReachingCheckPoint) {
 
-                if(rotation < 0 && robot.theta <= 40)
-                    player.robot.setGoalPose(robot.x,robot.y, 360 + rotation, 100, 100)
-                else
+                if(rotation < 0 && robot.theta <= 60) {
+                   rotationToApply = 360 + rotation
+                    console.log("starting from 0 again")
+                }
 
-                player.robot.setGoalPose(robot.x,robot.y, robot.theta + rotation, 100, 100)
+                else
+                  rotationToApply = rotation
+
+                move()
             }
         }
 
@@ -177,10 +196,15 @@ Item {
             var distanceSquared = findDistanceSquared(moveZone, cursor)
 
             // 150 is the real max distance between the two circles
-            var currentSpeed = (Math.sqrt(distanceSquared) / 150) * (player.maxSpeed - 50) + 50
-            
-            if(cursor.visible && canMove())
-                player.robot.setGoalPose(player.robot.x + x, player.robot.y - y, player.robot.theta,currentSpeed+player.boostSpeed,100)
+            var currentSpeed = (Math.sqrt(distanceSquared) / 150) * (player.maxSpeed - 40) + 40
+
+            if(cursor.visible && canMove()) {
+
+                xToApply = x
+                yToApply = y
+                currentSpeedToApply = currentSpeed
+                move()
+            }
         }
     }
 
@@ -199,8 +223,16 @@ Item {
 
         onVisibleChanged: {
 
-            if(!visible && canMove())
-                player.robot.clearTracking()
+            if(!visible) {
+
+                xToApply = 0
+                yToApply = 0
+                currentSpeedToApply = 0
+
+                if(canMove())
+                    player.robot.clearTracking()
+            }
+
         }
 
     }
@@ -239,13 +271,13 @@ Item {
 
     Image {
         source: "qrc:/assets/general/coin.png"
-        x: Math.random()*(window.width-width) + width
-        y: Math.random()*(window.height-height) + height
+        x: Math.random()*(window.width-width*3) + width
+        y: Math.random()*(window.height-height*3) + height
         visible: globalManager.coinTimer.running
 
         onVisibleChanged: {
-            x =  Math.random()*(window.width-width) + width
-            y =  Math.random()*(window.height-height) + height
+            x =  Math.random()*(window.width-width*3) + width
+            y =  Math.random()*(window.height-height*3) + height
         }
 
     }

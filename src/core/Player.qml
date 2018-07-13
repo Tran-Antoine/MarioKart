@@ -63,7 +63,7 @@ Item {
 
                     if(!isReachingCheckPoint) {
 
-                        robot.setGoalPose(lastCheckPoint.x, lastCheckPoint.y, 1,100,100)
+                        robot.setGoalPose(lastCheckPoint.x, lastCheckPoint.y, 1,180,180)
                         isReachingCheckPoint = true
                     }
                 }
@@ -100,7 +100,7 @@ Item {
 
     function updateCheckPoints() {
 
-        if(globalManager.gameTimer.running == false)
+        if(globalManager.gameTimer.running == false || isReachingCheckPoint)
             return
 
         var currentMap = window.mapChoosing.selected
